@@ -42,7 +42,7 @@
                 </label>
         </div>
         <div class="col-sm-3">
-                <input type="number" name="quantity" id="quantity"  class="form-control title" />
+                <input type="number" name="quantity" min="0" placeholder="1" id="quantity" class="form-control title" /> </input>
         </div>
         <div class="col-sm-3">
                 <button class="btn btn-success add_to_cart" data-id="<?=$result['id']?>">Add to cart</button>
@@ -69,41 +69,43 @@
 
 <script type="text/javascript">
 $( '.add_to_cart' ).click(function(e) {
-    e.preventDefault();
+    // e.preventDefault();
     // location.reload();
     var data = {};
     var book_id = $(this).attr('data-id');
 
     data.quantity = $('#quantity').val(); 
+    data.item = $('.count').val();
     data.itemId = book_id;  
    
-//   alert( data.quantity );
-// vsichki da gi zadam v edin obekt s json_encode
-// var sessionItems ->
+
         $.ajax({
             type: "POST",   
             url: `/books/setSesssionData/`,
-            // url: `cart_model/addItem/`
             dataType: 'json',
             data: data,
             
         }).done(function(data) {
+            console.log(data.message);
             // alert(JSON.stringify(data.data))
-                if (data.data === "Added"){
-                       alert("Успешно добавихте елемент в количката");
-                       location.reload();
+                if (data.data.message == "quantity"){
+                    // alert(JSON.stringify(data.data.totalPrice));
+                    $('.TotalPrice').text(data.data.totalPrice);
+                    $('.count').text(data.data.count);
+                    //    alert("Успешно добавихте елемент в количката");
+                    //    location.reload();
+                 }else if(data.data.message == "new"){
+                    //  alert(data.data.message);
+                    $('.TotalPrice').text(data.data.totalPrice);
+                    $('.count').text(data.data.count);
                  }else{
-                        alert("Успешно добавихте първият си елемент в количката");
-                        location.reload();
+                    location.reload();
                  }
         })
 
 });
 </script>
-
-
-
-
+<?php $this->load->view('templates/footer');  ?>
 
 
 

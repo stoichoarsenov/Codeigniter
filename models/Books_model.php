@@ -165,4 +165,14 @@ class Books_model extends CI_Model {
             echo 'asd';
         }
     }
+    
+    public function getPriceById($id){
+        if(empty($id)){
+           echo 'DIDNT FIDNT ID IN getPriceById </br>';
+        }
+        $itemPriceSql = "SELECT price from av_books where id = ?";
+        $itemPrice = $this->db->query($itemPriceSql, $id);
+        $price = $itemPrice->result_array();
+        return $price;
+    }
 }

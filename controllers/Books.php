@@ -4,6 +4,7 @@ class Books extends CI_Controller{
 
     private $cartItemCount;
     private $category;
+    private $totalPrice;
 
 public function __construct(){
     
@@ -13,7 +14,8 @@ public function __construct(){
     $this->load->model('cart_model');
     $this->load->model('books_model');
     $this->load->helper('url_helper');
-
+    // $this->getSessionQuantityData();
+    $this->totalPrice = $this ->cart_model->getTotalPrice();
     $this->cartItemCount = $this->getSessionQuantityData();
     $this->category = $this->getCategories();
 
@@ -99,6 +101,7 @@ public function page($cat,$page=1,$records_per_page=2,$order_by="",$order_type="
         echo 'Няма подходящи резултати';
         exit();
     }
+    $result['totalPrice'] = $this->totalPrice;
     $result['category'] = $this->category;
     $result['count'] = $this->cartItemCount;
     $this->load->view('books/pages', $result);
@@ -143,6 +146,7 @@ public function getExactBook($id = NULL){
        $data['categories'][] = $category_item;
 
     }
+    $data['totalPrice'] = $this->totalPrice;
     $data['category'] = $this->category;
     $data['count'] = $this->cartItemCount;
     $this->load->view('books/getExactBook', $data); 
@@ -159,73 +163,49 @@ public function getExactBook($id = NULL){
     /*
     $itemId -> book item id
     $quantity -> quantity
-    $title -> book title
-    $author -> book author
-    $price -> book price
     */
 
     public function setSesssionData(){
-        // $data = $this->input->post();
-        // if(!isset($data)){
-        //     exit('няма намерени резултати в POST');
-        // }
+        // var_dump($_SESSION);
+        $itemId = $this->input->post('itemId');
+        $itemId = (int)$itemId;
+        $quantity = $this->input->post('quantity');
+        $quantity = (int)$quantity;
+        // var_dump($quantity); exit();
+        if(!isset($itemId)){
+            exit('няма намерени резултати в POST');
+        }
+
+        if($quantity < 1){
+            $quantity = 1;
+        }
+
+        $sessionData = array(
+                'itemId' => $itemId,
+                'quantity' => $quantity
+        );
+
         
 
-        // $itemId = $data['itemId'];
-        // $itemId = (int)$itemId;
-        // $bookInfo = $this->books_model->get_exact_book($itemId);
-        // $quantity = $data['quantity'];
 
-        // // var_dump($bookInfo[0]);exit();
-     
-        // $title = $bookInfo[0]['title'];
-        // $author = $bookInfo[0]['author'];
-        // $price = $bookInfo[0]['price'];
-
-        // if($quantity < 1){
-        //     $quantity = 1;
-        // }
-        // $totalPrice = $price * $quantity;
-        // $arr = 0;
-        // // $arr = $this->cart_model->addItem($data);
-        // // echo $arr;
-        // if(array_key_exists('addToCartItem',$_SESSION)){
-        //     $quantity += $_SESSION['addToCartItem'][$itemId]['quantity'];
-        //     $_SESSION['addToCartItem'][$itemId] = array(
-        //                                         'id' => $itemId,
-        //                                         'title' => $title, 
-        //                                         'quantity' => $quantity, 
-        //                                         'price' => $price,
-        //                                         'total_price' => $totalPrice);
-        //     $message = "Added";
-            
-        // } else {
-        // $_SESSION['addToCartItem'][$itemId] = array(
-        //                         'id' => $itemId,
-        //                         'title' => $title, 
-        //                         'quantity' => $quantity, 
-        //                         'price' => $price,
-        //                         'total_price' => $totalPrice);
-        //                         $message = "Created";
-        // }
-        // $ajax_result = array(
-        //     'data' => $message
-        // );
+        $ajax_result = array(
+            'data' => $this->cart_model->addItem($sessionData)
+        );
         
 
-        // if($this->input->is_ajax_request()){
-        //     error_reporting (0);
-        //     echo json_encode($ajax_result);
-        // }
+        if($this->input->is_ajax_request()){
+            error_reporting (0);
+            echo json_encode($ajax_result);
+        }
         
-        // else{
-        //     echo 'NON AJAX MODE :<br /><br /><pre>';
-        //     print_r($ajax_result);
-        //     echo '</pre>';
-        // }
+        else{
+            echo 'NON AJAX MODE :<br /><br /><pre>';
+            print_r($ajax_result);
+            echo '</pre>';
+        }
 
-        // exit(1);
-        $this->cart_model->addItem($_POST);
+        exit(1);
+        
     }
 
     /* 
@@ -237,39 +217,60 @@ public function getExactBook($id = NULL){
         $count = 0;
         if(!array_key_exists('addToCartItem',$_SESSION)){
             $data['count'] = 0;
-        }
-        else{
-        $sessionItems = $_SESSION['addToCartItem'];
-        foreach($sessionItems as $key =>$item){
-            $count ++;
-        }
+        } else {
+                $sessionItems = $_SESSION['addToCartItem'];
+                    foreach($sessionItems as $key =>$item){
+                        $count ++;
+                    }
         $data['count'] = $count;
-    }
-    // $cart
-    return $count;
+        }
+        return $count;
     // $this->load->view('books/cartQuantity',$data);
-}
+    }
+
+    public function setItemQuantity($book_id, $quantity){
+        if(empty($quantity) || empty($book_id)){
+                redirect('/books/printSessionItems');
+            }
+        else{
+            $ajax_result = array(
+                'updated_items' => $this->cart_model->updateItemsCount($book_id, $quantity),
+            );
+            // var_dump($this->input->is_ajax_request());exit();
+        if($this->input->is_ajax_request()){
+                error_reporting (0);
+                echo json_encode($ajax_result);
+            }
+            
+        else{
+                echo 'NON AJAX MODE :<br /><br /><pre>';
+                print_r($ajax_result);
+                echo '</pre>';
+            }
+
+        exit(1);
+        }
+    }
+
 
     /*
     извеждане на количката
     */
     public function printSessionItems(){
 
-        if(array_key_exists('addToCartItem',$_SESSION)){
-            $sessionItems = $_SESSION['addToCartItem'];
-                
-                foreach($sessionItems as $value){
-                    $items['items'][] = $value;
-                }
-            }
-
-        if (empty($items)){
-             redirect('books/page/33/2');
-            }
+        $items = $this->cart_model->getItemsFromSession();
+        if(empty($items)){
+            redirect('http://www.test.com:8080/books/page/33');
+        }
+            $items['totalPrice'] = $this->totalPrice;
             $items['category'] = $this->category;
             $items['count'] = $this->cartItemCount;
             $this->load->view('books/printSessionItems', $items);
-}
+    }
+
+    
+
+
 
 
     //Remove item from shopping cart 
@@ -277,19 +278,11 @@ public function getExactBook($id = NULL){
     // @param $itemId 
 
     public function removeItemsFromSession($book_id){
-        // var_dump($_POST);
-        // $itemId = $this->input->post['book_id'];
-        if (!empty($book_id)){
-            $book_id = (int)$book_id;
-                unset($_SESSION['addToCartItem'][$book_id]);
-                    $message = "deleted";
-        }
-        else{
-                    $message = "shopping cart is empty";
-        }
+
+        // var_dump($book_id);exit();
 
         $ajax_result = array(
-            'data' => $message
+            'data' => $this->cart_model->removeItem($book_id)
         );
         // var_dump($this->input->is_ajax_request());exit();
         if($this->input->is_ajax_request()){
@@ -339,7 +332,7 @@ public function getBooksByCategory($id = NULL){
 
 }
 
- 
+ //Създаване на нова книга
 
     public function create(){
         $this->load->helper('form');
@@ -366,6 +359,7 @@ public function getBooksByCategory($id = NULL){
 
 
         else {
+            $data['totalPrice'] = $this->totalPrice;
             $data['category'] = $this->category;
             $data['count'] = $this->cartItemCount;                                         
             $this->load->view('books/create', $data);
@@ -373,6 +367,11 @@ public function getBooksByCategory($id = NULL){
         }
 
     }
+
+//Използва се при създаването на книга 
+//Прави проверка в базата дани дали има книга със същото име
+//и съответно връща съобщение 
+
 
     public function checkTitle($title){
         $query = "SELECT * FROM av_books WHERE `title` = ?";
