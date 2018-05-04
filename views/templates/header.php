@@ -91,10 +91,11 @@ messages: {
 
   <style>
 
+.body{
+padding-bottom:60px;
+}
 
-
-
-footer {
+.footer {
   position: absolute;
   right: 0;
   bottom: 0;
@@ -102,6 +103,7 @@ footer {
   padding: 1rem;
   background-color: #efefef;
   text-align: center;
+  
 }
 
   arrow {

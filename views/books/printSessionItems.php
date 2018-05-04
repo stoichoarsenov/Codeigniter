@@ -1,5 +1,6 @@
 
 <?php $this->load->view('templates/header');  ?>
+
 <div class="container-fluid">
     <!-- Control the column width, and how they should appear on different devices -->
     <div class="row">
@@ -36,12 +37,11 @@ if(isset($bookInfo)){
 ?>
     
 </div>
-
 <button class="btn btn-success" style="display: block;
                                         margin: 75 auto;
                                         text-align: center;"> Продължи с поръчката  <span class="totalPrice"> <?=$totalPrice?> </span> лв. </button>
 
-
+<!-- </div> -->
  <script type="text/javascript">
  </script>
 
