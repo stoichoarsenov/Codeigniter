@@ -7,7 +7,7 @@
                 <?php
                     $titles = $category['title'];
                     $categoryIds = $category['itemId'];
-                    
+                    // var_dump($totalPrice);exit();
                         foreach ($titles as $value => $title){
                             $URL_Segment = $this->uri->segment(3, 0);
                             if($URL_Segment === $title['id']){
@@ -18,7 +18,6 @@
                             }
                             
                             
-                            // echo $product_id;
                         }
                 ?>
         </ul>
@@ -28,10 +27,10 @@
                 <span class="glyphicon glyphicon-shopping-cart"></span>  
                      <?php
                      if($count == 1){
-                        echo $count." Артикул";
+                        echo '<span class="count">'.$count.'</span> Артикул <span class="TotalPrice">' .$totalPrice.'</span> лв ';
                      }
                      else if($count>1){
-                        echo $count." Артикула";
+                        echo '<span class="count">'.$count.'</span> Артикула <span class="TotalPrice">' .$totalPrice.'</span> лв ';
                      }else{
                         echo 'Количката е празна';
                     }
@@ -43,7 +42,10 @@
  
 
         <!-- </li> -->
+<?php
+// echo $this->cart_model->getTotalPrice();
 
+?>
 
 
 
