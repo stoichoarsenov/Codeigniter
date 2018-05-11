@@ -15,19 +15,19 @@ echo form_open('books/create',$attributes); ?>
             <div class="col-xl-2">  <label for="description">Description</label> <input type="text" name="description" id="description" class="form-control"/> </div>
             <div class="col-xl-2">  <label for="price">Price</label>    <input type="text" name="price" id="price"  class="form-control"/> </div>
 
- <div class="col-xl-2">
- <label for="category" >Категория</label>
-            <select name="category"  class="form-control">
-                    <?php foreach ($category['title'] as $category_item): ?>                      
-                                <option value="<?php echo $category_item['id']?>"><?php echo $category_item['title'];?></option>
-                    <?php endforeach; ?>   
-            </select>
-</div>
-<div class="col-xl-2">
-    <input style="margin-top:10px; margin-left:45%;" type="submit" class="btn btn-success"  name="submit" value="Create new book" />
+        <div class="col-xl-2">
+        <label for="category" >Категория</label>
+                    <select name="category"  class="form-control">
+                            <?php foreach ($category['title'] as $category_item): ?>                      
+                                        <option value="<?php echo $category_item['id']?>"><?php echo $category_item['title'];?></option>
+                            <?php endforeach; ?>   
+                    </select>
         </div>
-</div>
-   </div>
+        <div class="col-xl-2">
+            <input style="margin-top:10px; margin-left:45%;" type="submit" class="btn btn-success"  name="submit" value="Create new book" />
+                </div>
+        </div>
+    </div>   
    </div>
 
 <?php echo form_close(); ?>
@@ -43,9 +43,6 @@ echo form_open('books/create',$attributes); ?>
                 method: 'POST',
                 dataType: 'json'
             }).done(function(data) {
-                
-                // $('.message').text(data.data);
-                // alert(data.data)
                 if (data.data !== "success"){
                         $('.message').text(data.data);
                         $("#title").removeClass('valid');

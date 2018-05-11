@@ -2,9 +2,9 @@
 
 class Books extends CI_Controller{
 
-    private $cartItemCount;
-    private $category;
-    private $totalPrice;
+    public $cartItemCount;
+    public $category;
+    public $totalPrice;
 
 public function __construct(){
     
@@ -14,7 +14,6 @@ public function __construct(){
     $this->load->model('cart_model');
     $this->load->model('books_model');
     $this->load->helper('url_helper');
-    // $this->getSessionQuantityData();
     $this->totalPrice = $this ->cart_model->getTotalPrice();
     $this->cartItemCount = $this->getSessionQuantityData();
     $this->category = $this->getCategories();
@@ -34,7 +33,8 @@ public function index()
 }
 
 
-public function page($cat,$page=1,$records_per_page=2,$order_by="",$order_type="") {   
+public function page($cat,$page=1,$records_per_page=2,$order_by="",$order_type="",$pagesCount="3") {   
+
 
     if(empty($order_type)){
         $order_type = "asc";
@@ -101,6 +101,7 @@ public function page($cat,$page=1,$records_per_page=2,$order_by="",$order_type="
         echo 'Няма подходящи резултати';
         exit();
     }
+    $result['pageCount'] = $pagesCount;
     $result['totalPrice'] = $this->totalPrice;
     $result['category'] = $this->category;
     $result['count'] = $this->cartItemCount;

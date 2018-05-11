@@ -10,6 +10,30 @@ class Category_model extends CI_Model {
         $this->load->database();
     }
     
+    public function getCategories(){
+        $categories = $this->books_model->get_categories();
+        foreach($categories['category'] as $item){
+            $categoryTitle['title'][] = $item;
+        }
+        foreach($categories['category_item_id'] as $itemId){
+            $categoryTitle['itemId'][] = $itemId;
+        }
+        return $categoryTitle;
+    }
+
+    public function getSessionQuantityData(){
+        $count = 0;
+        if(!array_key_exists('addToCartItem',$_SESSION)){
+            $data['count'] = 0;
+        } else {
+                $sessionItems = $_SESSION['addToCartItem'];
+                    foreach($sessionItems as $key =>$item){
+                        $count ++;
+                    }
+        $data['count'] = $count;
+        }
+        return $count;
+    }
 
     public function get_category(){
 
@@ -22,10 +46,6 @@ class Category_model extends CI_Model {
             $category[$key]['title'] = $queryResult_item['title'];      
             $category[$key]['keyword'] = $queryResult_item['keyword'];  
         }
-        // var_dump($category);exit();
-        
-        // var_dump($category);exit();
-        
         return $category;
 
     }

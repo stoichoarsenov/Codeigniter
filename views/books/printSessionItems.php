@@ -23,7 +23,7 @@ if(isset($bookInfo)){
             
         echo '<div class="row">';
         echo '<div class="col-sm-3">'.$item[0]['title'].'</div>';
-        echo '<div class="col-sm-2"><input class="addQuantityToCart" type="number" min="1" data-id="'.$item[0]['id'].'" placeholder="'.$quantity[$key].'"></input></div>';
+        echo '<div class="col-sm-2"><input class="addQuantityToCart" type="number" min="1"  data-id="'.$item[0]['id'].'" value="'.$quantity[$key].'"></input></div>';
         // echo '<div class="col-sm-1">'.$quantity[$key].'</div>';
         echo '<div class="col-sm-1">'.$item[0]['price'].'</div>';
         echo '<div class="col-sm-1" id="'.$item[0]['id'].'">'.$itemTotalPrice[$key].'</div>';
@@ -39,11 +39,11 @@ if(isset($bookInfo)){
 </div>
 <button class="btn btn-success" style="display: block;
                                         margin: 75 auto;
-                                        text-align: center;"> Продължи с поръчката  <span class="totalPrice"> <?=$totalPrice?> </span> лв. </button>
+                                        text-align: center;"
+                                        onclick="location.href='http://www.test.com:8080/buyitemsincart/registerOrderName';"> Продължи с поръчката  <span class="totalPrice"> <?=$totalPrice?> </span> лв. </button>
 
 <!-- </div> -->
- <script type="text/javascript">
- </script>
+
 
  
 <script type="text/javascript">
@@ -63,16 +63,10 @@ $( '.remove_from_cart' ).click(function(e) {
                         alert('Изтрит');
                         location.reload();
                     }
-                    else{
-                        // alert(data.data);
-                        // alert('not deleted');
-                    }
                 })
 
 });
-</script>
 
-<script type="text/javascript">
 $('.addQuantityToCart').change(function(e) {
     var book_id = $(this).attr('data-id');
     var quantity = Math.abs($(this).val());

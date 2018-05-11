@@ -1,4 +1,6 @@
 <?php
+// namespace application\models;
+
 
 class Cart_model extends CI_Model {
     //Limit on page
@@ -9,55 +11,81 @@ class Cart_model extends CI_Model {
         $this->load->database();
         $this->load->library('session');
         $this->load->model('books_model');
-        // $this->items=$this->getItemsFromSession();
     }
 
-    public function getItems($update_from_session=false){
-        // if($update_from_session){
-            // $this->items=$this->getItemsFromSession();
-        // }
-        // return $this->items;
-    }
 
-    //
+
+    /**
+     * The function get all items from session
+     * it is used in PrintSessionItems
+     * 
+     * @param Array $value
+     * It is used to get the total value of items 
+     * in this array there are two variables -> item ID and item quantity
+     * 
+     * @param Array $bookInfo
+     * Also multidimensional array
+     * It stores id, title, author, description and price
+     * there is also dimension for current category ->
+     * 
+     * @param Array $items 
+     * collect all information about item
+     * 
+     * @return Array 
+     */
+    
     public function getItemsFromSession(){
-        
+        // Check if there is item in the cart alredy. 
+        //
         if(array_key_exists('addToCartItem',$_SESSION)){
             $sessionItems = $_SESSION['addToCartItem'];
-           
-
-                foreach($sessionItems as $value){
-                    // print_r($value);
-                    $items['items'][] = $value;
-                    // echo '<pre> items: </br> ',print_r($items['items'],1),'</pre>';
+        
+            foreach($sessionItems as $value){
+                $items['items'][] = $value;
+            }
+        }
+          
+        //If there is already item in the cart
+        //it returns information to Cart_model with the new data
+        if(!empty($_SESSION['addToCartItem'])){
+        
+            foreach($_SESSION['addToCartItem'] as $itemKey => $item){
+                    $bookInfo[] = $this->books_model->get_exact_book($sessionItems[$itemKey]['id']);
                 }
-            }
-            // echo '<pre> bookInfo: </br> ',print_r($bookInfo,1),'</pre>';
-            if(!empty($_SESSION['addToCartItem'])){
-                    foreach($_SESSION['addToCartItem'] as $itemKey => $item){
-                        $bookInfo[] = $this->books_model->get_exact_book($sessionItems[$itemKey]['id']);
-                        // $items['price'][] = $items['items'][1]['quantity'] * $bookInfo[][]['price'];
-                    }
-                $items['bookInfo'] = $bookInfo;
-            }
+            $items['bookInfo'] = $bookInfo;
+        // }
            
             foreach($items['bookInfo'] as $key  => $val){
                 $items['itemTotalPrice'][] = $items['items'][$key]['quantity'] * $items['bookInfo'][$key][0]['price'];
                 $items['quantity'][] = $items['items'][$key]['quantity'];
             }
-            return $items;
         }
 
 
-   
-    public function updateSession(){
-        // session cart_items = this-> items 
-    }  
+            return $items;
+        }
+
+        public function getSessionQuantityData(){
+                $count = 0;
+                if(!array_key_exists('addToCartItem',$_SESSION)){
+                    $data['count'] = 0;
+                } else {
+                        $sessionItems = $_SESSION['addToCartItem'];
+                            foreach($sessionItems as $key =>$item){
+                                $count ++;
+                            }
+                $data['count'] = $count;
+                }
+                return $count;
+            }
+ 
 
 
-    /*
-    return : Total price for all items;
-    */
+
+    /**
+     * return : Total price for all items; 
+     */
+    
     public function getTotalPrice(){
         $totalPrice = 0;
         // var_dump($_SESSION['addToCartItem']);
@@ -77,6 +105,7 @@ class Cart_model extends CI_Model {
         }
         return $totalPrice;
     }
+
     
     /*
     При промяна на бройката в количката да се увеличава броя на книгите следователно и цената и крайната цена!
@@ -95,21 +124,36 @@ class Cart_model extends CI_Model {
                 $sessionKey = $key;
             }
         }
+         
+            $itemPrice = $this->books_model->getPriceById($itemId);
+           
             $_SESSION['addToCartItem'][$sessionKey]['quantity'] = $quantity;
-            // echo '<pre>'.print_r($_SESSION['addToCartItem']).'</pre>';
+            $totalPriceForItem = $itemPrice[0]['price'] * $quantity;
             $message['id'] = $itemId;
             $message['quantity'] = $quantity;
             $totalPrice = $this->getTotalPrice();
-            // print_r($itemTotalPrice);
+            $message['totalPriceForItem'] = $totalPriceForItem;
             $message['totalPrice'] = $totalPrice; 
             return $message;         
         }
     }
 
-        // return $message;
+    /**
+     * Изчистване на цялата количка
+     * @return string  
+     */
+    public function clearCart(){
+        $message = "";
+        if(isset($_SESSION['addToCartItem'])){
+            unset($_SESSION['addToCartItem']);
+            $message = "deleted";
+        }
+        else{                               
+            $message = "shopping cart is empty";
+        }
+        return $message;                       
+    }
 
-        // $this->updateSession();
-    // }  
 
     public function removeItem($index){
         $message = "";
@@ -139,9 +183,6 @@ class Cart_model extends CI_Model {
         
     }  
 
-/*
-INDEX???
-*/
 
     public function addItem($index){
         // var_dump($_SESSION);
@@ -199,6 +240,41 @@ INDEX???
 
         }
     }
+
+    /**
+    * запазване на ифнормация за продуктите и кой ги е добавил (id на потребителя)
+    * запазват се следните данни id (primary) ... 
+    * created_by (последното въведено id - на потребителя)
+    * product_id 
+    * quantity
+    * price
+    */
+    public function setUserProduct($createdBy, $productId, $quantity, $totalPrice, $dateAdded){
+    
+        $productInformationSql = array(
+                            'createdBy'     => $createdBy, 
+                            'productId'     => $productId,
+                            'quantity'      => $quantity,
+                            'totalPrice'    => $totalPrice,
+                            'dateAdded'     => $dateAdded
+        );
+                            
+            $sql = $this->db->insert('st_order_product', $productInformationSql);
+            // var_dump($sql);
+            if($sql)
+            {
+                return true; // to the controller
+            }
+            else{
+                return false;
+            } 
+        
+    }
+
+
+        // $sql = $this->db->insert('st_order_customer', $insertNewUserSQL)
+    
+    // }
  
 
     
