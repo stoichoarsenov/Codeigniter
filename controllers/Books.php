@@ -5,6 +5,8 @@ class Books extends CI_Controller{
     public $cartItemCount;
     public $category;
     public $totalPrice;
+    public $isLogged;
+    public $getUsername;
 
 public function __construct(){
     
@@ -13,10 +15,14 @@ public function __construct(){
     $this->load->library('session');
     $this->load->model('cart_model');
     $this->load->model('books_model');
+    $this->load->model('user_model');
     $this->load->helper('url_helper');
     $this->totalPrice = $this ->cart_model->getTotalPrice();
     $this->cartItemCount = $this->getSessionQuantityData();
     $this->category = $this->getCategories();
+    $this->isLogged = $this->user_model->isLogged();
+    $this->getUsername = $this->user_model->getUsername();
+    
 
 
 }
@@ -105,6 +111,8 @@ public function page($cat,$page=1,$records_per_page=2,$order_by="",$order_type="
     $result['totalPrice'] = $this->totalPrice;
     $result['category'] = $this->category;
     $result['count'] = $this->cartItemCount;
+    $result['isLogged'] = $this->isLogged;
+    $result['currUserName'] = $this->getUsername;
     $this->load->view('books/pages', $result);
 }
 
@@ -150,6 +158,9 @@ public function getExactBook($id = NULL){
     $data['totalPrice'] = $this->totalPrice;
     $data['category'] = $this->category;
     $data['count'] = $this->cartItemCount;
+    $data['isLogged'] = $this->isLogged;
+    $data['currUserName'] = $this->getUsername;
+    
     $this->load->view('books/getExactBook', $data); 
 
 }
@@ -266,6 +277,8 @@ public function getExactBook($id = NULL){
             $items['totalPrice'] = $this->totalPrice;
             $items['category'] = $this->category;
             $items['count'] = $this->cartItemCount;
+            $items['isLogged'] = $this->isLogged;
+            $items['currUserName'] = $this->getUsername;
             $this->load->view('books/printSessionItems', $items);
     }
 
@@ -362,7 +375,9 @@ public function getBooksByCategory($id = NULL){
         else {
             $data['totalPrice'] = $this->totalPrice;
             $data['category'] = $this->category;
-            $data['count'] = $this->cartItemCount;                                         
+            $data['count'] = $this->cartItemCount;  
+            $data['isLogged'] = $this->isLogged;     
+            $data['currUserName'] = $this->getUsername;                               
             $this->load->view('books/create', $data);
     
         }

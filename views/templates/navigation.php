@@ -4,6 +4,11 @@ $activeCreate = '';
 $printSessionItems = '';
 $registerUser = '';
 $userLogin = '';
+$profile = '';
+$changepassword = '';
+$adress = '';
+$photo = '';
+$profileInfo = '';
 
 if($this->uri->segment(2) == 'page'){ 
     $activeCategories="active"; 
@@ -13,11 +18,25 @@ if($this->uri->segment(2) == 'page'){
     $registerUser = "active";
 }else if ($this->uri->segment(2) == 'login'){
     $userLogin = "active";
+// }else if ($this->uri->segment(1) == 'user'){
+    // $profile = "active";
+}else if($this->uri->segment(2) == 'changepassword'){
+    $changepassword = "active";
+    $profile = "active";
+}else if($this->uri->segment(2) == 'adress'){
+    $adress = "active";
+    $profile = "active";
+}else if($this->uri->segment(2) == 'photo'){
+    $photo = "active";
+    $profile = "active";
+}else if($this->uri->segment(2) == 'info'){
+    $profileInfo = "active";
+    $profile = "active";
 }else{
     $printSessionItems = "active";
 }
-
 ?>
+<div id="main-menu">
 <nav class="navbar navbar-inverse">
   <div class="container-fluid">
     <ul class="nav navbar-nav navbar">
@@ -58,14 +77,36 @@ if($this->uri->segment(2) == 'page'){
         </a>
         </li>
 </ul>
+
+<?php
+if ($isLogged == true){
+?> 
+<ul style="float: right" class="nav navbar-nav navbar-right">
+    <!-- <li class=<?=$profile?> >  <a href="/user/profile"><span class="glyphicon glyphicon-user"></span> Профил</a></li> -->
+
+    <li class="dropdown <?=$profile?>"><a class="dropdown-toggle" data-toggle="dropdown" href="/user/profile/profile"><span class="glyphicon glyphicon-user"></span> <?php echo $currUserName ?><span class="caret"></span></a>
+            <ul class="dropdown-menu">
+                <li class=<?=$profileInfo?>> <a href="/user/info">редактирай информация</a></li>
+                <li class=<?=$changepassword?> > <a href="/user/changepassword">смени парола</a></li>
+                <li class=<?=$photo?>> <a href="/user/photo">Промени профилната снимка</a></li>
+                <li class=<?=$adress?> > <a href="/user/adress">Aдреси за доставка</a></li>
+            </ul>
+    </li>
+       
+    
+    <li> <a href="/user/logout"><span class="glyphicon glyphicon-log-in"></span> Изход</a></li>
+
+
+<?php }else{ ?>
 <ul style="float: right" class="nav navbar-nav navbar-right">
     <li class=<?=$registerUser?> >  <a href="/user/register"><span class="glyphicon glyphicon-user"></span> Регистрация</a></li>
     <li class=<?=$userLogin?> >     <a href="/user/login"><span class="glyphicon glyphicon-log-in"></span> Вход</a></li>
 </ul>
-        
+
+<?php } ?>        
   </div>
 </nav>
-
+</div>
 
 
 

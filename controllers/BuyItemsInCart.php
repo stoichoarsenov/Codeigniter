@@ -5,6 +5,9 @@ class BuyItemsInCart extends CI_Controller{
     private $cartItemCount;
     private $totalPrice;
     private $category;
+    private $isLogged;
+    private $getUsername;
+
 
     public function __construct(){
         
@@ -22,7 +25,9 @@ class BuyItemsInCart extends CI_Controller{
         $this->cartItemCount = $this->cart_model->getSessionQuantityData();
         $this->totalPrice = $this ->cart_model->getTotalPrice();
         $this->category = $this->category_model->getCategories();
-        
+        $this->isLogged = $this->user_model->isLogged();
+        $this->getUsername = $this->user_model->getUsername();
+
     }
 
     /**
@@ -39,15 +44,41 @@ class BuyItemsInCart extends CI_Controller{
      */
     
     public function saveInformation(){
-        // var_dump($_POST['number']);
-        $name = $this->input->post('name',TRUE);
-        $familyName = $this->input->post('familyName',TRUE);
-        $txtEmail = $this->input->post('txtEmail',TRUE);
-        $number = $this->input->post('number',TRUE);
-        $adress = $this->input->post('adress',TRUE);
+       
+
+        $isLogged =  $this->user_model->isLogged();
+        if($isLogged == true){
+            $userId = $_SESSION['userInfo']['userId'];
+            $userInfo = $this->user_model->getUserInfo($userId);
+
+
+            $name =  $userInfo[0]['username'];
+            $familyName = $userInfo[0]['usrFamName'];
+            $txtEmail = $userInfo[0]['email'];
+            $number = $userInfo[0]['phoneNumber'];
+            $userAdress = $this->user_model->getUserAdress($userId);
+            foreach($userAdress as $adressItem){
+                if($adressItem['is_active'] == 1){
+                    $adress = $adressItem['Addr'];
+                    $city = $adressItem['AddrCity'];
+                    $office = $adressItem['AddrNeibr'];
+                }
+            }
+
+        }else{
+            $name = $this->input->post('name',TRUE);
+            $familyName = $this->input->post('familyName',TRUE);
+            $txtEmail = $this->input->post('txtEmail',TRUE);
+            $number = $this->input->post('number',TRUE);
+            $adress = $this->input->post('adress',TRUE);
+            $office = $this->input->post('selectOffice',TRUE);
+            $city = $this->input->post('chooseCity',TRUE);
+        }
+
+
+
+       
         $comment = $this->input->post('comment',TRUE);
-        $office = $this->input->post('selectOffice',TRUE);
-        $city = $this->input->post('chooseCity',TRUE);
         $currentTime = date("Y-m-d H:i:s");
         $totalPriceForUser = $this->totalPrice; 
 
@@ -62,7 +93,6 @@ class BuyItemsInCart extends CI_Controller{
             $success = false;
             $error = 'Количката е празна';
         }
-        
         else{
         /**
          * запазване на информацията за user
@@ -73,7 +103,7 @@ class BuyItemsInCart extends CI_Controller{
                 $success = false;
                 $error = 'Нещо стана и не успях да запиша';
             }
-
+            
         //  var_dump($success);exit();
 
         //Взима последното въведено ID, което в случая е на последния потребител въвел информация.
@@ -122,7 +152,7 @@ class BuyItemsInCart extends CI_Controller{
                          */
                         $this->cart_model->clearCart();
         }    
-
+        
         $ajax_result = array(
             'success' => $success,
             'error' => $error
@@ -169,13 +199,37 @@ class BuyItemsInCart extends CI_Controller{
     }
     
     public function registerOrderName(){
+        // $userInfo = 
+        $isLogged =  $this->user_model->isLogged();
+        if($isLogged == true){
+            $userId = $_SESSION['userInfo']['userId'];
+            $userInfo = $this->user_model->getUserInfo($userId);
+            $result['userInfo'] = $userInfo;
+            $result['isLogged'] = $isLogged;
+            
+
+            $userAdress = $this->user_model->getUserAdress($userId);
+            foreach($userAdress as $adressItem){
+                if($adressItem['is_active'] == 1){
+                    // var_dump($adressItem);
+                    $result['adress'] = $adressItem['Addr'];
+                    $result['city'] = $adressItem['AddrCity'];
+                    $result['office'] = $adressItem['AddrNeibr'];
+                }
+
+
+            }
+        }
 
         $result['category'] = $this->category;
         $result['count'] = $this->cartItemCount;
         $result['totalPrice'] = $this->totalPrice;
-        $this->load->view('register/orderName', $result);
+        $result['currUserName'] = $this->getUsername;
+        $result['isLogged'] = $this->isLogged;
+        $this->load->view('user/register/orderName', $result);
 
     }
+
 
 
 
