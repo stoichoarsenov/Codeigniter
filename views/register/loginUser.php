@@ -86,23 +86,22 @@ function showPassword() {
 $('#btnLogin').click(function(e) {
     e.preventDefault()
     var login_form = $('#loginForm').serialize();
-    // alert(login_form);         
         $.ajax({
             url: '/user/loginUser',
             method: 'POST',          
             dataType: 'json',
             data: login_form,
         })
-        //     .done(function(data) {
-        //         if(data.success == true){
-        //             alert('Успешно се регистрирахте');
-        //         }
+            // .done(function(data) {
+            //     if(data.success == true){
+            //         alert('Успешно се регистрирахте');
+            //     }
         
                 
-        //     }).fail(function() {
-        //         alert('Упс нещо стана');
-        //     });
-        // }
+            // }).fail(function() {
+            //     alert('Упс нещо стана');
+            // });
+        }
     })
 
 

@@ -69,20 +69,20 @@ if ($this->uri->segment(6,0) == 'price'){
             <div class="row">
                 <div class="col-sm-3">  <h4 '.$titleActive.'> Заглавие
                 
-                                            <a href="'.base_url().'books/page/'.$cat.'/1/'.$recordsPerPage.'/title/asc" ><arrow '.$arrowTitleUpActive.' class="up"></arrow></a>      
-                                            <a href="'.base_url().'books/page/'.$cat.'/1/'.$recordsPerPage.'/title/desc"><arrow '.$arrowTitleDownActive.' class="down"></arrow></a> 
+                                            <a href="/books/page/'.$cat.'/1/'.$recordsPerPage.'/title/asc" ><arrow '.$arrowTitleUpActive.' class="up"></arrow></a>      
+                                            <a href="/books/page/'.$cat.'/1/'.$recordsPerPage.'/title/desc"><arrow '.$arrowTitleDownActive.' class="down"></arrow></a> 
                                          
                 </div>
 
                 <div class="col-sm-3">  <h4 '.$authorActive.'> Автор
-                                            <a href="'.base_url().'books/page/'.$cat.'/1/'.$recordsPerPage.'/author/asc" ><arrow '.$arrowAuthorUpActive.' class="up"></arrow></a>      
-                                            <a href="'.base_url().'books/page/'.$cat.'/1/'.$recordsPerPage.'/author/desc"><arrow '.$arrowAuthorDownActive.' class="down"> </arrow></a> 
+                                            <a href="/books/page/'.$cat.'/1/'.$recordsPerPage.'/author/asc" ><arrow '.$arrowAuthorUpActive.' class="up"></arrow></a>      
+                                            <a href="/books/page/'.$cat.'/1/'.$recordsPerPage.'/author/desc"><arrow '.$arrowAuthorDownActive.' class="down"> </arrow></a> 
                                         </h4> 
                 </div>
 
                 <div class="col-sm-2">  <h4 '.$priceActive.'> Цена
-                                            <a href="'.base_url().'books/page/'.$cat.'/1/'.$recordsPerPage.'/price/asc" ><arrow '.$arrowPriceUpActive.' class="up"></arrow></a>      
-                                            <a href="'.base_url().'books/page/'.$cat.'/1/'.$recordsPerPage.'/price/desc"><arrow '.$arrowPriceDownActive.' class="down"> </arrow></a> 
+                                            <a href="/books/page/'.$cat.'/1/'.$recordsPerPage.'/price/asc" ><arrow '.$arrowPriceUpActive.' class="up"></arrow></a>      
+                                            <a href="/books/page/'.$cat.'/1/'.$recordsPerPage.'/price/desc"><arrow '.$arrowPriceDownActive.' class="down"> </arrow></a> 
                                         </h4> 
                 </div>
 

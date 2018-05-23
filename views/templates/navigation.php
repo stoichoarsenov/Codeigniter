@@ -48,10 +48,10 @@ if($this->uri->segment(2) == 'page'){
                         foreach ($titles as $value => $title){
                             $URL_Segment = $this->uri->segment(3, 0);
                             if($URL_Segment === $title['id']){
-                                echo '<li class="active"> <a href="http://www.test.com:8080/books/page/'.$title['id'].'/1/2/title/asc"> '.$title['title'].' '.$categoryIds[$value].' </a></li>';
+                                echo '<li class="active"> <a href="/books/page/'.$title['id'].'/1/2/title/asc"> '.$title['title'].' '.$categoryIds[$value].' </a></li>';
                             }
                             else{
-                                echo '<li> <a href="http://www.test.com:8080/books/page/'.$title['id'].'/1/2/title/asc"> '.$title['title'].' '.$categoryIds[$value].' </a></li>';
+                                echo '<li> <a href="/books/page/'.$title['id'].'/1/2/title/asc"> '.$title['title'].' '.$categoryIds[$value].' </a></li>';
                             }
                             
                             
@@ -60,9 +60,9 @@ if($this->uri->segment(2) == 'page'){
             </ul>
       </li>
 
-<li class="<?=$activeCreate?>"><a href="http://www.test.com:8080/books/create">Добави книга</a></li>
+<li class="<?=$activeCreate?>"><a href="/books/create">Добави книга</a></li>
     <li class="<?=$printSessionItems?>">
-        <a href="<?=base_url()?>books/printSessionItems"> 
+        <a href="/books/printSessionItems"> 
             <span class="glyphicon glyphicon-shopping-cart"></span>  
                     <?php
                         if($count == 1){

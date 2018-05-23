@@ -55,7 +55,9 @@ echo form_open('books/create',$attributes); ?>
                         $('.message').text("");
                 }
             }).fail(function() {    
-                return false;
+                // alert(dat);
+                // return false;
+                console.log(data);
             });
         })
 </script>

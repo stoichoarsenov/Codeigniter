@@ -42,7 +42,6 @@ public function register(){
     if($isLogged){
         redirect('user/info');
     }
-
     $data['totalPrice'] = $this->totalPrice;
     $data['category'] = $this->category;
     $data['count'] = $this->cartItemCount;
@@ -158,14 +157,15 @@ public function register(){
     public function login(){
     $isLogged =  $this->isLogged;
         if($isLogged){
-            redirect('user/info');
+            redirect("user/info");
         }
+
     $data['totalPrice'] = $this->totalPrice;
     $data['category'] = $this->category;
     $data['count'] = $this->cartItemCount;
     $data['isLogged'] = $isLogged;
     $data['currUserName'] = $this->getUsername;
-    $this->load->view('user/login/loginUser', $data);
+    $this->load->view('/user/login/loginUser', $data);
     }
 
 
@@ -185,6 +185,7 @@ public function register(){
         }
 
         $checkIfUserExists = $this->user_model->userLogin($email,$password);
+            
             if($checkIfUserExists == false){
                 $success = false;
                 $error = 'Не съществува такъв потребител';       
@@ -192,7 +193,6 @@ public function register(){
                 $success = true;
             }
 
-            // var_dump($success);
 
         $ajax_result = array(
             'error' => $error,
@@ -542,7 +542,7 @@ public function register(){
          */
         $isLogged =  $this->isLogged;
         if(!$isLogged){
-            redirect('user/info');
+            redirect('info');
         }
         
         /**

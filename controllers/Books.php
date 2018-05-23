@@ -356,6 +356,7 @@ public function getBooksByCategory($id = NULL){
         
         if(!empty($_POST)){
 
+            var_dump($_POST);
             $insert_arr['title'] = trim($_POST['title']);
             $insert_arr['author'] = trim($_POST['author']);
             $insert_arr['description'] = trim($_POST['description']);
@@ -364,15 +365,20 @@ public function getBooksByCategory($id = NULL){
             $insert_arr['date'] = trim(date('Y-m-d H:i:s'));
 
             
-            $this->books_model->set_book($insert_arr);
+            $setBook = $this->books_model->set_book($insert_arr);
+            var_dump($setBook);exit();
             // echo $error;
             $bookId = $this->db->insert_id();
-            $this->books_model->set_book_category($bookId,$categoryId);
-            redirect('books/getexactbook/'.$bookId);
+            $setCategory = $this->books_model->set_book_category($bookId,$categoryId);
+            var_dump($setBook);exit();
+
+            // redirect('books/getexactbook/'.$bookId);
         }
 
 
         else {
+
+            
             $data['totalPrice'] = $this->totalPrice;
             $data['category'] = $this->category;
             $data['count'] = $this->cartItemCount;  
@@ -394,7 +400,7 @@ public function getBooksByCategory($id = NULL){
         $params = array( $title );
         $result = $this->db->query( $query, $params );
         
-        
+        // var_dump($result);exit();
         if( $result->num_rows() === 0 ) {
             $message = "success";
         } else {
