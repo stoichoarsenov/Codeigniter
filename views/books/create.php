@@ -9,11 +9,11 @@ echo form_open('books/create',$attributes); ?>
   <div class="panel panel-default">
        <div class="panel-body">
        <div class="form-group">
-            <div class="col-xl-2">  <label for="title">Title</label> <input type="text" name="title" id="title"  class="form-control title" /> </div>
+            <div class="col-xl-2">  <label for="title">Заглавие</label> <input type="text" name="title" id="title"  class="form-control title" /> </div>
             <p class="message"></p>
-            <div class="col-xl-2">  <label for="author">Author</label> <input type="text" name="author" id="author" class="form-control"/> </div>
-            <div class="col-xl-2">  <label for="description">Description</label> <input type="text" name="description" id="description" class="form-control"/> </div>
-            <div class="col-xl-2">  <label for="price">Price</label>    <input type="text" name="price" id="price"  class="form-control"/> </div>
+            <div class="col-xl-2">  <label for="author">Автор</label> <input type="text" name="author" id="author" class="form-control"/> </div>
+            <div class="col-xl-2">  <label for="description">Описание</label> <input type="text" name="description" id="description" class="form-control"/> </div>
+            <div class="col-xl-2">  <label for="price">Цена</label>    <input type="text" name="price" id="price"  class="form-control"/> </div>
 
         <div class="col-xl-2">
         <label for="category" >Категория</label>
@@ -35,7 +35,7 @@ echo form_open('books/create',$attributes); ?>
 
  
  <!-- title validation  -->
- <script type="text/javascript">    
+ <script type="text/javascript">   
         $('.title').on('blur', function() {
             var title = $(this).val();
             $.ajax({

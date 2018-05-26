@@ -1,4 +1,4 @@
-
+<?php $this->load->view('templates/header');  ?>
 <?php echo form_open('category/createCategory'); ?>
 <?php echo validation_errors(); ?>
 
@@ -12,3 +12,4 @@
     <div class="col-sm-3"><input type="submit" name="submit" value="Create new category" /></div>
     </div>
 </form>
+<?php $this->load->view('templates/footer');  ?>

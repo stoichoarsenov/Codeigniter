@@ -237,7 +237,6 @@ public function getExactBook($id = NULL){
         $data['count'] = $count;
         }
         return $count;
-    // $this->load->view('books/cartQuantity',$data);
     }
 
     public function setItemQuantity($book_id, $quantity){
@@ -272,7 +271,7 @@ public function getExactBook($id = NULL){
 
         $items = $this->cart_model->getItemsFromSession();
         if(empty($items)){
-            redirect('http://www.test.com:8080/books/page/33');
+            redirect('/books/page/33');
         }
             $items['totalPrice'] = $this->totalPrice;
             $items['category'] = $this->category;
@@ -356,7 +355,7 @@ public function getBooksByCategory($id = NULL){
         
         if(!empty($_POST)){
 
-            var_dump($_POST);
+            // var_dump($_POST);
             $insert_arr['title'] = trim($_POST['title']);
             $insert_arr['author'] = trim($_POST['author']);
             $insert_arr['description'] = trim($_POST['description']);
@@ -366,13 +365,13 @@ public function getBooksByCategory($id = NULL){
 
             
             $setBook = $this->books_model->set_book($insert_arr);
-            var_dump($setBook);exit();
+            // var_dump($setBook);exit();
             // echo $error;
             $bookId = $this->db->insert_id();
             $setCategory = $this->books_model->set_book_category($bookId,$categoryId);
-            var_dump($setBook);exit();
+            // var_dump($setCategory);exit();
 
-            // redirect('books/getexactbook/'.$bookId);
+            redirect('books/getexactbook/'.$bookId);
         }
 
 

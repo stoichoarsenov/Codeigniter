@@ -239,15 +239,12 @@ class BuyItemsInCart extends CI_Controller{
      */
 
      public function chooseShop($city){
-        //  var_dump($city);
         $sucess = true;
         $shopArrCity = array();
         $shopArr = array();
             if($city == "choose"){ 
                 $sucess = false;
             }
-
-        // var_dump($city);
 
         $shopArrCity['Varna']        = ['Бул. Република №59', 'Западна промишлена зона','24/7 Еконтомат - МОЛ Варна','Аспарухово' ];
         $shopArrCity['Burgas']       = ['кв. Победа, ул. Индустриална', 'Братя Миладинови', 'Въстаническа', 'Дебелянов-Славейков' ];

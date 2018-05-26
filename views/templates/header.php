@@ -32,6 +32,8 @@ $this->load->library('session');
 
     <!-- SWEET ALERT -->
   <script src="https://unpkg.com/sweetalert2@7.8.2/dist/sweetalert2.all.js"></script>
+  <script src="https://cloud.tinymce.com/stable/tinymce.min.js?apiKey=w369bt4tmx2htffidw9yug68ld18m6ywrqrpravublp6qqon"></script>
+
     
     
     
@@ -926,7 +928,13 @@ arrow {
 
        <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 
-    
+        <script>
+        tinymce.init({
+            selector:'#description',
+            branding: false
+            });
+        
+    </script>
 
 
   </head>

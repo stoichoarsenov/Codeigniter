@@ -40,7 +40,7 @@ if(isset($bookInfo)){
 <button class="btn btn-success" style="display: block;
                                         margin: 75 auto;
                                         text-align: center;"
-                                        onclick="location.href='http://www.test.com:8080/buyitemsincart/registerOrderName';"> Продължи с поръчката  <span class="totalPrice"> <?=$totalPrice?> </span> лв. </button>
+                                        onclick="location.href='/buyitemsincart/registerOrderName';"> Продължи с поръчката  <span class="totalPrice"> <?=$totalPrice?> </span> лв. </button>
 
 <!-- </div> -->
 

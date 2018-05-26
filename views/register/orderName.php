@@ -87,10 +87,10 @@ echo form_open('register/orderName',$attributes); ?>
       .done(function(status) {
           if (status == "deleted"){
             // alert(data.message);
-              window.location.href = "http://www.test.com:8080/books/page/33/1/2/title/asc";
+              window.location.href = "/books/page/33/1/2/title/asc";
           }
           else{
-            window.location.href = "http://www.test.com:8080/books/page/33/1/2/title/asc";
+            window.location.href = "/books/page/33/1/2/title/asc";
           }
         })
   })
@@ -151,10 +151,10 @@ $('#chooseCity').change(function(e){
           if($('#createTempRegister').valid() == true){
               if(data.success == true){
                 alert('поръчката завършена');
-                window.location.href = "http://www.test.com:8080/books/page/33/1/2/title/asc";
+                window.location.href = "/books/page/33/1/2/title/asc";
               }else if(data.error == "Количката е празна" ){
                 alert(data.error);
-                window.location.href = "http://www.test.com:8080/books/page/33/1/2/title/asc";
+                window.location.href = "/books/page/33/1/2/title/asc";
               }
               else{
                 alert(data.error);
